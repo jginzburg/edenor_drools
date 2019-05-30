@@ -36,46 +36,50 @@ public class DecisionTableTest {
     	    KieContainer kContainer = ks.getKieClasspathContainer();
         	kSession = kContainer.newKieSession("ksession-dtables");
 
-            
-            Consumo_106 consumo = new Consumo_106();
-            consumo.setFecha_inicial(format.parse("25-Feb-2019"));
-            consumo.setFecha_lect(format.parse("25-Mar-2019"));
-
-            consumo.setConsumo(84); 
-            consumo.setId_usuario("0000040279");
-
-            Liquidacion liquidacion = new Liquidacion();
-            liquidacion.setId_usuario(consumo.getId_usuario());
-            
-            kSession.insert(consumo);                        
-            kSession.setGlobal("resultado", liquidacion);
-            
-            
-            kSession.fireAllRules();
-         
-            //imprimirDrl();
-            
-            System.out.println("Corrida 1: Resultado="+liquidacion);
-            kSession = kContainer.newKieSession("ksession-dtables");
-            
-            Consumo_106 consumo2 = new Consumo_106();
-            consumo2.setFecha_inicial(format.parse("23-Feb-2019"));
-            consumo2.setFecha_lect(format.parse("25-Mar-2019"));
-
-            consumo2.setConsumo(276); 
-            consumo2.setId_usuario("0000233641");
-
-            Liquidacion liquidacion2 = new Liquidacion();
-            liquidacion2.setId_usuario(consumo2.getId_usuario());
-            
-            kSession.insert(consumo2);                        
-            kSession.setGlobal("resultado", liquidacion2);
-            
-            
-            kSession.fireAllRules();
-  
-            
-            System.out.println("Corrida 2: Resultado="+liquidacion2);
+        	long initial_time = System.currentTimeMillis();
+            for (int i = 0; i < 150000; i++) {
+	            Consumo_106 consumo = new Consumo_106();
+	            consumo.setFecha_inicial(format.parse("25-Feb-2019"));
+	            consumo.setFecha_lect(format.parse("25-Mar-2019"));
+	
+	            consumo.setConsumo(84); 
+	            consumo.setId_usuario("0000040279");
+	
+	            Liquidacion liquidacion = new Liquidacion();
+	            liquidacion.setId_usuario(consumo.getId_usuario());
+	            
+	            kSession.insert(consumo);                        
+	            kSession.setGlobal("resultado", liquidacion);
+	            
+	            
+	            kSession.fireAllRules();
+	         
+	            //imprimirDrl();
+	            
+	         //   System.out.println("Corrida 1: Resultado="+liquidacion);
+	            kSession = kContainer.newKieSession("ksession-dtables");
+	            
+	            Consumo_106 consumo2 = new Consumo_106();
+	            consumo2.setFecha_inicial(format.parse("23-Feb-2019"));
+	            consumo2.setFecha_lect(format.parse("25-Mar-2019"));
+	
+	            consumo2.setConsumo(276); 
+	            consumo2.setId_usuario("0000233641");
+	
+	            Liquidacion liquidacion2 = new Liquidacion();
+	            liquidacion2.setId_usuario(consumo2.getId_usuario());
+	            
+	            kSession.insert(consumo2);                        
+	            kSession.setGlobal("resultado", liquidacion2);
+	            
+	            
+	            kSession.fireAllRules();
+	  
+	            
+	         //   System.out.println("Corrida 2: Resultado="+liquidacion2);
+	            if  (i%1000==0) System.out.println("Registros procesados."+i);
+            }
+            System.out.println("tiempo: " + (System.currentTimeMillis() - initial_time));
              
         } catch (Throwable t) {
             t.printStackTrace();
